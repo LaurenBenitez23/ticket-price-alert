@@ -1,0 +1,44 @@
+name: Check Ticket Prices
+
+on:
+  push:
+      branches: ["main"]
+  # schedule:
+  #   - cron: "*/30 * * * *"   # every 30 minutes
+  workflow_dispatch:        # allows manual runs
+
+jobs:
+  check-prices:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Restore alert state
+        uses: actions/cache@v4
+        with:
+          path: alert_state.json
+          key: alert-state-${{ github.run_id }}
+          restore-keys: |
+            alert-state-
+
+      - name: Run price checker
+        run: poetry run python -m scripts.check_price
+
+      - name: Save alert state
+        uses: actions/cache@v4
+        with:
+          path: alert_state.json
+          key: alert-state-${{ github.run_id }}

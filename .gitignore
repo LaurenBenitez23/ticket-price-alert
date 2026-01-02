@@ -13,3 +13,5 @@ __pycache__/
 
 # Local scratch files (optional)
 scratch*
+
+alert_state.json

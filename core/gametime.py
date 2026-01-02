@@ -25,7 +25,7 @@ def extract_listings(data: dict) -> list[dict]:
         return data["results"]
     raise KeyError(f"Could not find listings array. Top-level keys: {list(data.keys())}")
 
-LOWER_LEVEL_GROUPS = set(['Bungalow Suites', 'Club', 'Floor', 'Main'])
+LOWER_LEVEL_GROUPS = set(['Bungalow Suites', 'Club', 'Floor', 'Main', 'Suite'])
 
 def get_cheapest_lower_level():
     response = requests.get(GAMETIME_URL, headers=HEADERS, timeout=20)
