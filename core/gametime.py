@@ -7,24 +7,6 @@ HEADERS = {
     "Accept": "application/json",
 }
 
-def dollars(cents: int) -> str:
-    return f"${cents / 100:.2f}"
-
-def extract_listings(data: dict) -> list[dict]:
-    """
-    Try common shapes:
-      - {"listings": [...]}
-      - {"data": {"listings": [...]} }
-      - {"results": [...]}
-    """
-    if isinstance(data.get("listings"), list):
-        return data["listings"]
-    if isinstance(data.get("data"), dict) and isinstance(data["data"].get("listings"), list):
-        return data["data"]["listings"]
-    if isinstance(data.get("results"), list):
-        return data["results"]
-    raise KeyError(f"Could not find listings array. Top-level keys: {list(data.keys())}")
-
 LOWER_LEVEL_GROUPS = set(['Bungalow Suites', 'Club', 'Floor', 'Main', 'Suite'])
 
 def get_cheapest_lower_level():
