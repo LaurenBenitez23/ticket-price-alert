@@ -59,3 +59,105 @@ Required environment variables include:
 - Support multiple events and users
 - Add alternative intake methods (e.g. form-based submission)
 - Optional API layer (FastAPI) for managing watches
+
+# Running Locally
+
+This project is primarily designed to run on a schedule via GitHub Actions, but it can also be run locally for development, testing, or experimentation.
+
+---
+
+## Requirements
+
+- Python 3.11+
+- Poetry
+
+You can verify your Python version with:
+
+```bash
+python --version
+```
+
+You can install Poetry following the official instructions:
+https://python-poetry.org/docs/#installation
+
+---
+
+## Install Dependencies
+
+From the root of the repository:
+
+```bash
+poetry install
+```
+
+This will create a virtual environment and install all required dependencies.
+
+---
+
+## Environment Variables
+
+This project relies on environment variables for email notifications.
+
+An example file is provided in the repository:
+
+```
+.env.example
+```
+
+This file documents the required variables but does **not** contain any real credentials.
+
+### Local setup
+
+Copy the example file and fill in your own values:
+
+```bash
+cp .env.example .env
+```
+
+### Required variables
+
+```env
+# Email address alerts are sent from
+GMAIL_FROM=
+
+# App password for the Gmail account (generate this in your Google Account settings)
+GMAIL_APP_PASSWORD=
+```
+
+## Gmail App Password
+
+This project sends email using Gmail SMTP and **requires a Gmail App Password**.  
+Normal Gmail account passwords will not work.
+
+To create an App Password:
+
+1. Make sure **2-Step Verification** is enabled on your Google account
+2. Go to Google’s App Passwords page:  
+   https://myaccount.google.com/apppasswords
+3. Enter an app name (for example: `ticket-price-alert`)
+4. Use the generated password as `GMAIL_APP_PASSWORD`
+
+Do **not** commit this value to the repository.  
+When running in GitHub Actions, store it as a repository secret.
+
+---
+
+## Run the Price Checker
+
+To run the price check locally:
+
+```bash
+poetry run python -m scripts.check_price
+```
+
+If a qualifying ticket is found:
+- a BUY signal will be printed to the console
+- an email notification will be sent
+
+---
+
+## Notes
+
+- Local runs are intended for development and debugging.
+- Scheduled runs and automation are handled via GitHub Actions.
+- No secrets should be committed to the repository.
