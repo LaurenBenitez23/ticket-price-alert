@@ -34,7 +34,7 @@ jobs:
 
       - name: Run price checker
         env:
-          GMAIL: ${{ secrets.GMAIL }}
+          GMAIL_FROM: ${{ secrets.GMAIL_FROM }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: poetry run python -m scripts.check_price
 

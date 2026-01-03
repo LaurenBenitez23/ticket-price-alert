@@ -9,7 +9,7 @@ def require_env(key: str) -> str:
     return val
 
 def send_email(subject: str, body: str) -> None:
-    email = require_env("GMAIL")
+    email = require_env("GMAIL_FROM")
     app_password = require_env("GMAIL_APP_PASSWORD")
 
     msg = EmailMessage()
