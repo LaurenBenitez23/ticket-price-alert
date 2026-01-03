@@ -7,7 +7,7 @@ HEADERS = {
     "Accept": "application/json",
 }
 
-LOWER_LEVEL_GROUPS = set(['Bungalow Suites', 'Club', 'Floor', 'Main', 'Suite'])
+LOWER_LEVEL_GROUPS = set(['Bungalow Suites', 'Club', 'Floor', 'Main'])
 
 def get_cheapest_lower_level():
     response = requests.get(GAMETIME_URL, headers=HEADERS, timeout=20)

@@ -1,7 +1,10 @@
-from core.gametime import get_cheapest_lower_level
 import json
+from core.gametime import get_cheapest_lower_level
+from notifiers.email import send_email
 from pathlib import Path
 from typing import Any
+from dotenv import load_dotenv
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parents[1]  # repo root
 STATE_FILE = BASE_DIR / "alert_state.json"
@@ -35,20 +38,26 @@ def main():
     price_cents = result["price_cents"]
     section_group = result.get("section_group")
 
-    if price_cents < BUY_THRESHOLD_CENTS:
+    email_body = (
+        f"Cheapest lower level: ${price_cents / 100:.2f}\n"
+        f"(Section {result['section']}, "
+        f"Row {result['row']}, "
+        f"{result['section_group']})"
+    )
+
+    if price_cents <= BUY_THRESHOLD_CENTS:
         last_alert_cents = alert_state["alerts_sent"].get(section_group)
 
         # Alert the first time, or again only if it drops further
         if last_alert_cents is None or price_cents < last_alert_cents:
             print("🚨 BUY SIGNAL 🚨")
+            send_email(
+                subject="Ticket Alert 🚨",
+                body=email_body,
+            )
             alert_state["alerts_sent"][section_group] = price_cents
 
-    print(
-        f"Cheapest lower level: ${price_cents / 100:.2f} "
-        f"(Section {result['section']}, "
-        f"Row {result['row']}, "
-        f"{result['section_group']})"
-    )
+    print(email_body)
 
     save_alert_state(alert_state)
 

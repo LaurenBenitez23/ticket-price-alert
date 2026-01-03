@@ -15,3 +15,5 @@ __pycache__/
 scratch*
 
 alert_state.json
+
+.env
